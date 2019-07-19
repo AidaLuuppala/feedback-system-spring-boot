@@ -24,7 +24,7 @@ CREATE TABLE "feedback" (
 CREATE TABLE "feedback_user" (
     	"id" serial NOT NULL,
     	"username" varchar(50) NOT NULL,
-    	"password" varchar(50) NOT NULL,
+    	"password" varchar(500) NOT NULL,
     	"role" varchar(50) NOT NULL,
     	"user_firstname" varchar(50) NOT NULL,
     	"user_lastname" varchar(50) NOT NULL,
@@ -35,6 +35,7 @@ CREATE TABLE "feedback_user" (
 );
 
 
-
+/* test data to feedback_user table for login with username = username and password = password */
+INSERT INTO feedback_user(username, password, role, user_firstname, user_lastname, department) VALUES ('username', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'ADMIN', 'Firstname', 'Lastname', 'Department');
 
 
