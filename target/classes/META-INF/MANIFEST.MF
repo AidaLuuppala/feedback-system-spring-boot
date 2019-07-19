@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: l623ofc
+Build-Jdk: 11
+Implementation-Title: feedback-system
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.project
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/feedback-system-spring-boot
+Created-By: Maven Integration for Eclipse
+

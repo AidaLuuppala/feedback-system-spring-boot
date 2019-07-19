@@ -1,0 +1,145 @@
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <!-- Meta tags -->
+      <meta charset = "utf-8">
+      <meta name = "viewport" content = "width = device-width, initial-scale = 1, shrink-to-fit = no">
+      <link rel = "stylesheet" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}" />
+      <title>Palautejärjestelmä</title>
+   </head>
+   
+   <body>
+      <div class = "container">       
+         <form action="#" method="post" th:action="@{update}" th:object="${feedback}">
+            <h2 class = "mt-4">Muokkaa palautetta</h2>
+            <hr/>
+			
+            <!-- Form levels error messages here -->
+			<div class = "form-group row ">
+			  	<div class="col-sm-8">
+					<span class="text-danger" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"> </span>      
+			  	</div>
+			</div>
+			
+			<!-- Form rows -->
+			<div id="from-rows">
+			<input type="hidden" th:field="*{feedback_id}" value="${feedback.feedback_id}">
+            <input type="hidden" th:field="*{language}" value="#{feedback.language}">
+            <input type="hidden" th:field="*{wants_contact}" value="#{feedback.wants_contact}">
+
+			<!-- Date -->
+            <div class = "form-group row">
+            	<label for="date" class="col-sm-2 col-form-label">Päivämäärä</label>
+            	<div class = "col-sm-4">
+             		<span th:text="${{feedback.feedback_date}}"></span>
+             		<input type="hidden" th:field="*{feedback_date}" th:placeholder="#{feedback.feedback_date}">
+             	</div>
+            </div>
+			
+             <!-- Feedback Type -->
+             <div class = "form-group row">
+            	<label for = "feedback_type" class = "col-sm-2 col-form-label">Palautteen tyyppi</label>
+            	<div class = "col-sm-4">
+               		   <select class="form-control" th:field="*{feedback_type}" id="feedback_type" value="" th:placeholder="#{feedback.feedback_type}">
+				        <option value="Kehu">Kehu</option>
+				        <option value="Moite">Moite</option>
+				        <option value="Kehitysidea">Kehitysidea</option>
+				      </select>
+               </div>
+             </div>
+
+             <!-- Feedback giver Type -->
+             <div class = "form-group row">
+            	<label for="feedback_giver_type" class="col-sm-2 col-form-label">Palautteen antaja</label>
+            	<div class = "col-sm-4">
+               		   <select class="form-control" th:field="*{feedback_giver_type}" id="feedback_giver_type" value="" th:placeholder="#{feedback.feedback_giver_type}">
+				        <option value="Henkilöasiakas">Henkilöasiakas</option>
+				        <option value="Yhteistyökumppani">Yhteistyökumppani</option>
+				      </select>
+               </div>
+             </div>
+
+             <!-- Feedback Topic -->
+             <div class = "form-group row">
+            	<label for="feedback_topic" class="col-sm-2 col-form-label">Palautteen aihe</label>
+            	<div class = "col-sm-4">
+               		   <select class="form-control" th:field="*{feedback_topic}" id="feedback_topic" value="" th:placeholder="#{feedback.feedback_topic}">
+				        <option value="Palveluja">Palveluja</option>
+				        <option value="Poimintaa">Toimintaa</option>
+				      </select>
+               </div>
+             </div>
+            
+            <!-- Textbox -->
+            <div class = "form-group row">
+            	<label for = "comments" class = "col-sm-2 col-form-label">Palauteteksti</label>
+            	<div class = "col-sm-4">
+               		<textarea th:field="*{feedback_text}" class = "form-control" rows = "3" th:placeholder="#{feedback.feedback_text}"></textarea>
+               </div>
+               <div class="col-sm-4">
+               		<span class="text-danger" th:errors="*{feedback_text}"></span>
+               </div>
+             </div>
+
+             <!-- Feedback status -->
+             <div class = "form-group row">
+            	<label for="feedback_status" class="col-sm-2 col-form-label">Palautteen status</label>
+            	<div class = "col-sm-4">
+               		   <select class="form-control" th:field="*{feedback_status}" id="feedback_status" value="" th:placeholder="#{feedback.feedback_status}">
+				        <option value="Uusi">Uusi</option>
+				        <option value="Käsittelyssä">Käsittelyssä</option>
+				        <option value="Käsitelty">Käsitelty</option>
+				        <option value="Arkistoitu">Arkistoitu</option>
+				      </select>
+               </div>
+             </div>
+
+            <!-- Contact info -->
+            <div id="contact-info" th:if="${feedback.wants_contact} == true">
+             	<!-- Firstname -->
+             	<div class="form-group row">
+	             	<label class="col-sm-2 col-form-label" for="firstname">Etunimi</label>
+	             	<div class = "col-sm-4">
+	             		<input type="text" class="form-control" th:field="*{contact_firstname}" th:placeholder="#{feedback.contact_firstname}">
+	             	</div>
+             	</div>
+             	<!-- Lastname -->
+             	<div class="form-group row">
+	             	<label class="col-sm-2 col-form-label" for="lastname">Sukunimi</label>
+	             	<div class = "col-sm-4">
+	             		<input type="text" class="form-control" th:field="*{contact_lastname}" th:placeholder="#{feedback.contact_lastname}">
+	             	</div>
+             	</div>
+    			<!-- Email -->
+    			<div class="form-group row">
+    				<label class="col-sm-2 col-form-label" for="email">Sähköposti</label>
+    				<div class = "col-sm-4">
+    					<input type="text" class="form-control" th:field="*{contact_email}" th:placeholder="#{feedback.contact_email}">
+    				</div>
+    			</div>
+    			<!-- Mobile -->
+    			<div class="form-group row">
+    				<label class="col-sm-2 col-form-label" for="mobile">Puhelinnumero</label>
+    				<div class = "col-sm-4">
+    					<input type="text" class="form-control" th:field="*{contact_mobile}" th:placeholder="#{feedback.contact_mobile}">
+    				</div>
+    			</div>
+    		</div>
+			
+			</div>
+			<!-- Submit button -->
+            <div class = "form-group row">
+               <div class = "col-sm-10">
+					<input class="btn btn-primary" type="submit" name="action" value="Takaisin">
+        			<input class="btn btn-primary" type="submit" name="action" value="Tallenna">
+        			<input class="btn btn-primary" type="submit" name="action" value="Poista">
+               </div>
+            </div>
+         </form>
+         
+      </div>
+      <script src = "https://code.jquery.com/jquery-3.3.1.slim.min.js"> </script>
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" > </script>
+      <script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" > </script>
+   </body>
+</html>
