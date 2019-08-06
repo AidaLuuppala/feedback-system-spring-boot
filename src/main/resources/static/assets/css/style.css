@@ -69,6 +69,7 @@ Button and inputs
 }
 
 .btn-primary {
+	margin: 5px 0px 5px 0px;
     background: #33cccc;
     color: #ccffff;
     border-color: transparent;
@@ -83,7 +84,7 @@ Button and inputs
 }
 
 .navbarbtn{
-	margin: 0px 0px 0px 10px;
+	margin: 0px 5px 0px 5px;
 	border: 0px;
 }
 
@@ -118,4 +119,19 @@ Dropdown menus
     border-color: #33cccc;
     height: auto;
     max-height: none;
+}
+
+/*
+Table
+*/
+
+table.tablesorter thead tr th {
+    background-image: url(https://www.kela.fi/kelafi-theme/images/bg.gif);
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+}
+
+.table td{
+	padding: 0px;
 }
