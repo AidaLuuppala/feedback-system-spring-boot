@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,14 +22,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.project.feedbacksystem.domain.Comment;
+import com.project.feedbacksystem.domain.CommentDAO;
 import com.project.feedbacksystem.domain.Feedback;
 import com.project.feedbacksystem.domain.FeedbackDAO;
 
+//controller class for site mapping
 @Controller
 public class FeedbackSystemController {
 	
 	@Autowired
-	private FeedbackDAO feedbackDAO; // use FeedbackDAO interface to call FeedbackDAOImpl methods
+	private FeedbackDAO feedbackDAO;
+	// use FeedbackDAO interface to call FeedbackDAOImpl database query methods
+	
+	@Autowired
+	private CommentDAO commentDAO;
+	// use CommentDAO interface to call CommentDAOImpl database query methods
 	
 	// login page
     @RequestMapping(value="/login")
@@ -88,9 +97,10 @@ public class FeedbackSystemController {
 
 	}
 	
+	// search feedbacks with searchword
 	@PostMapping("/search")
 	public String search(@RequestParam("searchWord") String searchWord, Model model) {
-		// if searchWord is search, that means that search button is clicked without a searchWord,
+		// if searchWord is 'search', that means that search button is clicked without a searchWord,
 		if( searchWord.equals("search") ){
 			List<Feedback> feedbacks = feedbackDAO.findAll(); // so find all feedbacks 
 			model.addAttribute("feedbacks", feedbacks);
@@ -104,20 +114,26 @@ public class FeedbackSystemController {
 	
 	// find one feedback to edit based on feedback_id
 	@PostMapping("/edit")
-	public String findOne(@RequestParam("feedback_id") int feedback_id, Model model) {
+	public String findOne(@RequestParam("feedback_id") long feedback_id, ModelMap map) {
+		//hae kaikki commentit
 		Feedback feedback = feedbackDAO.findOne(feedback_id);
-		model.addAttribute("feedback", feedback);
+		List<Comment> comments = commentDAO.findAll(feedback_id);
+		map.addAttribute("feedback", feedback);
+		map.addAttribute("comments", comments);
+		map.addAttribute("comment", new Comment());
 		return "edit";
 	}
 	
 	// update or delete feedback
 	@PostMapping("/update")
-	public String update(@RequestParam String action, Feedback feedback){
+	public String update(@RequestParam String action, @RequestParam("feedback_status") String feedback_status, Comment comment){
 		// if update button is clicked
+		long feedback_id = comment.getFeedback_id();
 		if( action.equals("Tallenna") ){
-			feedbackDAO.update(feedback); // update edited feedback
-		}else if( action.equals("Poista") ){ //if delete button is clicked
-			feedbackDAO.delete(feedback); // delete feedback 
+			feedbackDAO.update(feedback_id, feedback_status); // update status
+			commentDAO.save(comment);
+		}else if( action.equals("Poista") ){ // if delete button is clicked
+			feedbackDAO.delete(feedback_id); // delete feedback 
 		}
 		return "redirect:feedbacks"; //in all cases redirect back to feedbacks
 	} 
