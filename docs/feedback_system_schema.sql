@@ -19,8 +19,6 @@ CREATE TABLE "feedback" (
   OIDS=FALSE
 );
 
-
-
 CREATE TABLE "feedback_user" (
     	"id" serial NOT NULL,
     	"username" varchar(50) NOT NULL,
@@ -34,8 +32,18 @@ CREATE TABLE "feedback_user" (
   OIDS=FALSE
 );
 
-
 /* test data to feedback_user table for login with username = username and password = password */
 INSERT INTO feedback_user(username, password, role, user_firstname, user_lastname, department) VALUES ('username', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'ADMIN', 'Firstname', 'Lastname', 'Department');
 
+CREATE TABLE "comment" (
+	"comment_id" serial NOT NULL,
+	"feedback_id" int NOT NULL,
+	"comment_date" DATE NOT NULL,
+	"comment_text" varchar(4000) NOT NULL,
+	"comment_handler" varchar(100) NOT NULL,
+	CONSTRAINT "comment_pk" PRIMARY KEY ("comment_id")
+) WITH (
+  OIDS=FALSE
+);
 
+ALTER TABLE "comment" ADD CONSTRAINT "comment_fk0" FOREIGN KEY ("feedback_id") REFERENCES "feedback"("feedback_id");
