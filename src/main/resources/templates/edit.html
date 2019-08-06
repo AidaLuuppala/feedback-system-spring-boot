@@ -10,123 +10,122 @@
    
    <body>
       <div class = "container">       
-         <form action="#" method="post" th:action="@{update}" th:object="${feedback}">
-            <h2 class = "mt-4">Muokkaa palautetta</h2>
-            <hr/>
-			
-            <!-- Form levels error messages here -->
-			<div class = "form-group row ">
-			  	<div class="col-sm-8">
-					<span class="text-danger" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"> </span>      
-			  	</div>
-			</div>
+         <form action="#" method="post" th:action="@{update}" th:object="${comment}">
+            <h2 class = "mt-4">Palautteen käsittely</h2>
 			
 			<!-- Form rows -->
 			<div id="from-rows">
-			<input type="hidden" th:field="*{feedback_id}" value="${feedback.feedback_id}">
-            <input type="hidden" th:field="*{language}" value="#{feedback.language}">
-            <input type="hidden" th:field="*{wants_contact}" value="#{feedback.wants_contact}">
 
 			<!-- Date -->
             <div class = "form-group row">
-            	<label for="date" class="col-sm-2 col-form-label">Päivämäärä</label>
-            	<div class = "col-sm-4">
-             		<span th:text="${{feedback.feedback_date}}"></span>
-             		<input type="hidden" th:field="*{feedback_date}" th:placeholder="#{feedback.feedback_date}">
-             	</div>
+            	<div class="col-sm-2"><span>Päivämäärä:</span></div>
+            	<div class = "col-sm-4"><span th:text="${{feedback.feedback_date}}"></span></div>
             </div>
 			
              <!-- Feedback Type -->
              <div class = "form-group row">
-            	<label for = "feedback_type" class = "col-sm-2 col-form-label">Palautteen tyyppi</label>
-            	<div class = "col-sm-4">
-               		   <select class="form-control" th:field="*{feedback_type}" id="feedback_type" value="" th:placeholder="#{feedback.feedback_type}">
-				        <option value="Kehu">Kehu</option>
-				        <option value="Moite">Moite</option>
-				        <option value="Kehitysidea">Kehitysidea</option>
-				      </select>
-               </div>
-             </div>
-
+            	<div class="col-sm-2"><span>Palautteen tyyppi:</span></div>
+            	<div class = "col-sm-4"><span th:text="${feedback.feedback_type}"></span></div>
+            </div>
+           
              <!-- Feedback giver Type -->
              <div class = "form-group row">
-            	<label for="feedback_giver_type" class="col-sm-2 col-form-label">Palautteen antaja</label>
-            	<div class = "col-sm-4">
-               		   <select class="form-control" th:field="*{feedback_giver_type}" id="feedback_giver_type" value="" th:placeholder="#{feedback.feedback_giver_type}">
-				        <option value="Henkilöasiakas">Henkilöasiakas</option>
-				        <option value="Yhteistyökumppani">Yhteistyökumppani</option>
-				      </select>
-               </div>
+            	<div class="col-sm-2"><span>Palautteen antaja:</span></div>
+            	<div class = "col-sm-4"><span th:text="${feedback.feedback_giver_type}"></span></div>
              </div>
 
              <!-- Feedback Topic -->
              <div class = "form-group row">
-            	<label for="feedback_topic" class="col-sm-2 col-form-label">Palautteen aihe</label>
-            	<div class = "col-sm-4">
-               		   <select class="form-control" th:field="*{feedback_topic}" id="feedback_topic" value="" th:placeholder="#{feedback.feedback_topic}">
-				        <option value="Palveluja">Palveluja</option>
-				        <option value="Poimintaa">Toimintaa</option>
-				      </select>
-               </div>
+            	<div class="col-sm-2"><span>Palautteen aihe:</span></div>
+            	<div class = "col-sm-4"><span th:text="${feedback.feedback_topic}"></span></div>
              </div>
             
-            <!-- Textbox -->
-            <div class = "form-group row">
-            	<label for = "comments" class = "col-sm-2 col-form-label">Palauteteksti</label>
-            	<div class = "col-sm-4">
-               		<textarea th:field="*{feedback_text}" class = "form-control" rows = "3" th:placeholder="#{feedback.feedback_text}"></textarea>
-               </div>
-               <div class="col-sm-4">
-               		<span class="text-danger" th:errors="*{feedback_text}"></span>
-               </div>
-             </div>
-
-             <!-- Feedback status -->
+            <!-- Feedback Text -->
              <div class = "form-group row">
-            	<label for="feedback_status" class="col-sm-2 col-form-label">Palautteen status</label>
-            	<div class = "col-sm-4">
-               		   <select class="form-control" th:field="*{feedback_status}" id="feedback_status" value="" th:placeholder="#{feedback.feedback_status}">
-				        <option value="Uusi">Uusi</option>
-				        <option value="Käsittelyssä">Käsittelyssä</option>
-				        <option value="Käsitelty">Käsitelty</option>
-				        <option value="Arkistoitu">Arkistoitu</option>
-				      </select>
-               </div>
+            	<div class="col-sm-2"><span>Palauteteksti:</span></div>
+            	<div class = "col-sm-4"><span th:text="${feedback.feedback_text}"></span></div>
              </div>
 
             <!-- Contact info -->
             <div id="contact-info" th:if="${feedback.wants_contact} == true">
              	<!-- Firstname -->
-             	<div class="form-group row">
-	             	<label class="col-sm-2 col-form-label" for="firstname">Etunimi</label>
-	             	<div class = "col-sm-4">
-	             		<input type="text" class="form-control" th:field="*{contact_firstname}" th:placeholder="#{feedback.contact_firstname}">
-	             	</div>
+             	<div class = "form-group row">
+            		<div class="col-sm-2"><span>Etunimi:</span></div>
+            		<div class = "col-sm-4"><span th:text="${feedback.contact_firstname}"></span></div>
              	</div>
              	<!-- Lastname -->
-             	<div class="form-group row">
-	             	<label class="col-sm-2 col-form-label" for="lastname">Sukunimi</label>
-	             	<div class = "col-sm-4">
-	             		<input type="text" class="form-control" th:field="*{contact_lastname}" th:placeholder="#{feedback.contact_lastname}">
-	             	</div>
+             	<div class = "form-group row">
+            		<div class="col-sm-2"><span>Sukunimi:</span></div>
+            		<div class = "col-sm-4"><span th:text="${feedback.contact_lastname}"></span></div>
              	</div>
     			<!-- Email -->
-    			<div class="form-group row">
-    				<label class="col-sm-2 col-form-label" for="email">Sähköposti</label>
-    				<div class = "col-sm-4">
-    					<input type="text" class="form-control" th:field="*{contact_email}" th:placeholder="#{feedback.contact_email}">
-    				</div>
-    			</div>
+    			<div class = "form-group row">
+            		<div class="col-sm-2"><span>Sähköposti:</span></div>
+            		<div class = "col-sm-4"><span th:text="${feedback.contact_email}"></span></div>
+             	</div>
     			<!-- Mobile -->
-    			<div class="form-group row">
-    				<label class="col-sm-2 col-form-label" for="mobile">Puhelinnumero</label>
-    				<div class = "col-sm-4">
-    					<input type="text" class="form-control" th:field="*{contact_mobile}" th:placeholder="#{feedback.contact_mobile}">
-    				</div>
-    			</div>
+    			<div class = "form-group row">
+            		<div class="col-sm-2"><span>Puhelinnumero:</span></div>
+            		<div class = "col-sm-4"><span th:text="${feedback.contact_mobile}"></span></div>
+             	</div>
     		</div>
+    		<br>
+    		
+   			<h4 class = "mt-4">Palautteen kommentit</h4>
+
+   			<div th:each = "previous_comment : ${comments}">
+   				<div class = "form-group row">
+            		<div class="col-sm-2"><span>Päivämäärä:</span></div>
+            		<div class = "col-sm-4"><span th:text="${{previous_comment.comment_date}}"></span></div>
+             	</div>
+             	
+             	<div class = "form-group row">
+            		<div class="col-sm-2"><span>Kommentoija:</span></div>
+            		<div class = "col-sm-4"><span th:text="${previous_comment.comment_handler}"></span></div>
+             	</div>
+   			
+   				<div class = "form-group row">
+            		<div class="col-sm-2"><span>Kommentti:</span></div>
+            		<div class = "col-sm-4"><span th:text="${previous_comment.comment_text}"></span></div>
+             	</div>
+             	<br>
+    		</div>
+    		
+    		<h4 class = "mt-4">Lisää kommentti</h4>
+    		
+    		<!-- Feedback status -->
+	            <div class = "form-group row">
+	            	<label for="feedback_status" class="col-sm-2 col-form-label">Palautteen status</label>
+	            	<div class = "col-sm-4">
+	               		   <select class="form-control" name="feedback_status" id="feedback_status" value="" th:placeholder="#{feedback.feedback_status}">
+					        <option value="Uusi">Uusi</option>
+					        <option value="Käsittelyssä">Käsittelyssä</option>
+					        <option value="Käsitelty">Käsitelty</option>
+					        <option value="Arkistoitu">Arkistoitu</option>
+					      </select>
+	                </div>
+	             </div>
+    		
+    		<!-- Textbox -->
+            <div class = "form-group row">
+            	<label for = "comments" class = "col-sm-2 col-form-label">Kommentti</label>
+            	<div class = "col-sm-4">
+               		<textarea th:field="*{comment_text}" class = "form-control" rows = "3"></textarea>
+                </div>
+             </div>
+             
+             <div class = "form-group row">
+            	<label for = "comment_handler" class = "col-sm-2 col-form-label">Käsittelijä</label>
+            	<div class = "col-sm-4">
+               		<input type="text" th:field="*{comment_handler}">
+                </div>
+             </div>
+             
+             <input type="hidden" name="feedback_id" th:value="${feedback.feedback_id}"/>
+			 <input type="hidden" id="date" th:field="*{comment_date}" value="">
 			
 			</div>
+			<br>
 			<!-- Submit button -->
             <div class = "form-group row">
                <div class = "col-sm-10">
@@ -141,5 +140,19 @@
       <script src = "https://code.jquery.com/jquery-3.3.1.slim.min.js"> </script>
       <script src = "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" > </script>
       <script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" > </script>
+      <script>
+      //Get and modify current date
+      function setDate(){
+    	  var MyDate = new Date();
+    	  var MyDateString = "";
+    	  MyDateString = ('0' + MyDate.getDate()).slice(-2) + '.'
+          + ('0' + (MyDate.getMonth()+1)).slice(-2) + '.'
+          + MyDate.getFullYear();
+    	  
+          document.getElementById("date").value = MyDateString;
+          console.log(MyDateString);
+          }
+      setDate();
+      </script>
    </body>
 </html>
