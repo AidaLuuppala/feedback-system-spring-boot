@@ -28,7 +28,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 
 	// save feedback to the database
 	public void save(Feedback feedback) {
-		String sql = "insert into feedback(feedback_date, feedback_type, feedback_giver_type, feedback_topic, feedback_status, feedback_text, wants_contact, language, contact_firstname, contact_lastname, contact_email, contact_mobile) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into feedback(feedback_date, feedback_type, feedback_giver_type, feedback_topic, feedback_status, feedback_text, wants_contact, is_deleted, language, contact_firstname, contact_lastname, contact_email, contact_mobile) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Object[] parameters = new Object[] {
 				feedback.getFeedback_date(),
 				feedback.getFeedback_type(),
@@ -37,6 +37,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 				feedback.getFeedback_status(),
 				feedback.getFeedback_text(),
 				feedback.isWants_contact(),
+				feedback.isIs_deleted(),
 				feedback.getLanguage(),
 				feedback.getContact_firstname(),
 				feedback.getContact_lastname(),
@@ -46,8 +47,8 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 	}
 
 	// find one feedback to edit based on feedback_id
-	public Feedback findOne(int feedback_id) {
-		String sql = "select feedback_id, feedback_date, feedback_type, feedback_giver_type, feedback_topic, feedback_status, feedback_text, wants_contact, language, contact_firstname, contact_lastname, contact_email, contact_mobile from feedback where feedback_id = ?";
+	public Feedback findOne(long feedback_id) {
+		String sql = "select feedback_id, feedback_date, feedback_type, feedback_giver_type, feedback_topic, feedback_status, feedback_text, wants_contact, is_deleted, language, contact_firstname, contact_lastname, contact_email, contact_mobile from feedback where feedback_id = ?";
 		Object[] parameters = new Object[] { feedback_id };
 		RowMapper<Feedback> mapper = new FeedbackRowMapper();
 		Feedback feedback = jdbcTemplate.queryForObject(sql, parameters, mapper);
@@ -56,7 +57,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 
 	// find all feedbacks for admins to feedbacks page
 	public List<Feedback> findAll() {
-		String sql = "select feedback_id, feedback_date, feedback_type, feedback_giver_type, feedback_topic, feedback_status, feedback_text, wants_contact, language, contact_firstname, contact_lastname, contact_email, contact_mobile from feedback";
+		String sql = "select feedback_id, feedback_date, feedback_type, feedback_giver_type, feedback_topic, feedback_status, feedback_text, wants_contact, is_deleted, language, contact_firstname, contact_lastname, contact_email, contact_mobile from feedback where is_deleted = false";
 		RowMapper<Feedback> mapper = new FeedbackRowMapper();
 		List<Feedback> feedbacks = jdbcTemplate.query(sql, mapper);
 		return feedbacks;
@@ -72,14 +73,14 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 		if(isDate) {
 			try {
 				Date date = new SimpleDateFormat("dd.MM.yyyy").parse(searchWord);
-				sql = "select * from feedback where feedback_date=?";
+				sql = "select * from feedback where feedback_date=? and is_deleted = false";
 				parameters = new Object[] { date };
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		//search other fields with wildcards
 		}else {
-		sql = "select * from feedback where feedback_id::text LIKE ? or feedback_date::text LIKE ? or feedback_type ILIKE ? or feedback_giver_type ILIKE ? or feedback_topic ILIKE ? or feedback_status ILIKE ? or feedback_text ILIKE ? or wants_contact::text ILIKE ? or language ILIKE ? or contact_firstname ILIKE ? or contact_lastname ILIKE ? or contact_email ILIKE ? or contact_mobile ILIKE ?";
+		sql = "select * from feedback where (feedback_id::text LIKE ? or feedback_date::text LIKE ? or feedback_type ILIKE ? or feedback_giver_type ILIKE ? or feedback_topic ILIKE ? or feedback_status ILIKE ? or feedback_text ILIKE ? or wants_contact::text ILIKE ? or language ILIKE ? or contact_firstname ILIKE ? or contact_lastname ILIKE ? or contact_email ILIKE ? or contact_mobile ILIKE ?) and is_deleted = false";
 		parameters = new Object[] {
 				"%" + searchWord + "%",
 				"%" + searchWord + "%",
@@ -110,30 +111,17 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 	    return true;
 	}
 
-	// delete feedback from database
-	public void delete(Feedback feedback) {
-		String sql = "DELETE FROM feedback WHERE feedback_id = ?";
-		Object[] parameters = new Object[] { feedback.getFeedback_id() };
+	// delete feedback from listing, not from database
+	public void delete(long feedback_id) {
+		String sql = "UPDATE feedback SET is_deleted = true WHERE feedback_id = ?";
+		Object[] parameters = new Object[] { feedback_id };
 		jdbcTemplate.update(sql, parameters);
 	}
 	
 	// update feedback information to the database
-	public void update(Feedback feedback) {
-		String sql = "UPDATE feedback SET feedback_date = ?, feedback_type = ?, feedback_giver_type = ?, feedback_topic = ?, feedback_text = ?, feedback_status = ?, wants_contact = ?, language = ?, contact_firstname = ?, contact_lastname = ?, contact_email = ?, contact_mobile = ? WHERE feedback_id = ?";
-		Object[] parameters = new Object[] {
-				feedback.getFeedback_date(),
-				feedback.getFeedback_type(),
-				feedback.getFeedback_giver_type(),
-				feedback.getFeedback_topic(),
-				feedback.getFeedback_text(),
-				feedback.getFeedback_status(),
-				feedback.isWants_contact(),
-				feedback.getLanguage(),
-				feedback.getContact_firstname(),
-				feedback.getContact_lastname(),
-				feedback.getContact_email(),
-				feedback.getContact_mobile(),
-				feedback.getFeedback_id() };
+	public void update(long feedback_id, String feedback_status) {
+		String sql = "UPDATE feedback SET feedback_status = ? WHERE feedback_id = ?";
+		Object[] parameters = new Object[] { feedback_status, feedback_id };
 		jdbcTemplate.update(sql, parameters);
 	}
 }

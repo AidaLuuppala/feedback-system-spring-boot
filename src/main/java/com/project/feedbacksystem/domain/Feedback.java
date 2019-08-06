@@ -2,13 +2,15 @@ package com.project.feedbacksystem.domain;
 
 import java.util.Date;
 
-import javax.validation.constraints.Size;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
+// feedback object class
 public class Feedback {
+	// object attributes
+	
 	private long feedback_id;
 	
+	// date format so the date will be in right format
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date feedback_date;
 	
@@ -24,16 +26,18 @@ public class Feedback {
 	
 	private String contact_mobile;
 	
-	private boolean wants_contact;
+	private boolean wants_contact, is_deleted;
 	
+	// constructor without parameters
 	public Feedback() {
 		super();
 	}
 
+	// constructor with parameters
 	public Feedback(long feedback_id, Date feedback_date, String feedback_type, String feedback_giver_type,
 			String feedback_topic, String feedback_status, String language, String feedback_text,
 			String contact_firstname, String contact_lastname, String contact_email, String contact_mobile,
-			boolean wants_contact) {
+			boolean wants_contact, boolean is_deleted) {
 		super();
 		this.feedback_id = feedback_id;
 		this.feedback_date = feedback_date;
@@ -48,11 +52,13 @@ public class Feedback {
 		this.contact_email = contact_email;
 		this.contact_mobile = contact_mobile;
 		this.wants_contact = wants_contact;
+		this.is_deleted = is_deleted;
 	}
-
+	
+	//constructor with parameters, but without id
 	public Feedback(Date feedback_date, String feedback_type, String feedback_giver_type, String feedback_topic,
 			String feedback_status, String language, String feedback_text, String contact_firstname,
-			String contact_lastname, String contact_email, String contact_mobile, boolean wants_contact) {
+			String contact_lastname, String contact_email, String contact_mobile, boolean wants_contact, boolean is_deleted) {
 		super();
 		this.feedback_date = feedback_date;
 		this.feedback_type = feedback_type;
@@ -66,10 +72,12 @@ public class Feedback {
 		this.contact_email = contact_email;
 		this.contact_mobile = contact_mobile;
 		this.wants_contact = wants_contact;
+		this.is_deleted = is_deleted;
 	}
 
+	// constructor with parameters, but without contact info
 	public Feedback(Date feedback_date, String feedback_type, String feedback_giver_type, String feedback_topic,
-			String feedback_status, String language, String feedback_text, boolean wants_contact) {
+			String feedback_status, String language, String feedback_text, boolean wants_contact, boolean is_deleted) {
 		super();
 		this.feedback_date = feedback_date;
 		this.feedback_type = feedback_type;
@@ -79,7 +87,10 @@ public class Feedback {
 		this.language = language;
 		this.feedback_text = feedback_text;
 		this.wants_contact = wants_contact;
+		this.is_deleted = is_deleted;
 	}
+	
+	//getters and setters
 
 	public long getFeedback_id() {
 		return feedback_id;
@@ -184,6 +195,14 @@ public class Feedback {
 	public void setWants_contact(boolean wants_contact) {
 		this.wants_contact = wants_contact;
 	}
+	
+	public boolean isIs_deleted() {
+		return is_deleted;
+	}
+
+	public void setIs_deleted(boolean is_deleted) {
+		this.is_deleted = is_deleted;
+	}
 
 	@Override
 	public String toString() {
@@ -192,7 +211,7 @@ public class Feedback {
 				+ ", feedback_status=" + feedback_status + ", language=" + language + ", feedback_text=" + feedback_text
 				+ ", contact_firstname=" + contact_firstname + ", contact_lastname=" + contact_lastname
 				+ ", contact_email=" + contact_email + ", contact_mobile=" + contact_mobile + ", wants_contact="
-				+ wants_contact + "]";
+				+ wants_contact + ", is_deleted=" + is_deleted + "]";
 	}
 	
 }
