@@ -11,10 +11,27 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.project.feedbacksystem.web.ErrorPageController;
 import com.project.feedbacksystem.web.FeedbackSystemController;
 
 import junit.framework.TestCase;
 
-public class FeedbackSystemApplicationTests extends TestCase {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class FeedBackSystemErrorPageControllerTests extends TestCase {
 
+	
+	private MockMvc mockMvc;	
+	private ErrorPageController errorcontroller;
+	
+	@Before
+	public void setup() {
+		errorcontroller = new ErrorPageController();
+		mockMvc = MockMvcBuilders.standaloneSetup(errorcontroller).build();
+	}
+	
+	@Test
+	public void errorPageOpens() throws Exception {
+	mockMvc.perform(get("/error/")).andExpect(MockMvcResultMatchers.view().name("error"));
+	}
 }
